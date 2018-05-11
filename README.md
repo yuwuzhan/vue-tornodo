@@ -1,7 +1,6 @@
 
-# vue-project
-
-> A Vue.js project
+# vue-tornodo
+>tornodo provides service,and i don't want to use jq,no deliberate choice vue
 
 ## Build Setup
 
@@ -15,5 +14,4 @@ npm run dev
 # build for production with minification
 npm run build
 ```
-# vue-tornodo
-tornodo provides service,and i don't want to use jq,no deliberate choice vue
+
