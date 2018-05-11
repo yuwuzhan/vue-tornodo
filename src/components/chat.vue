@@ -8,12 +8,13 @@
   </div>
 </template>
 <script>
+import baseUrls from "../api/baseUrl";
 export default {
   data() {
     return {
       ws: "",
       msg: "",
-      rece: [],
+      rece: []
     };
   },
   methods: {
@@ -22,10 +23,9 @@ export default {
     }
   },
   mounted() {
-    if (!this.ws||this.ws.readyState===3) {
-      this.ws = new WebSocket("ws://192.168.1.70:8124/ws");
-      this.ws.onopen = () => {
-      };
+    if (!this.ws || this.ws.readyState === 3) {
+      this.ws = new WebSocket(baseUrls.chat);
+      this.ws.onopen = () => {};
       this.ws.onmessage = evt => {
         console.log("get message", evt.data);
         this.rece.push(evt.data);

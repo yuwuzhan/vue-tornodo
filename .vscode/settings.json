@@ -1,0 +1,23 @@
+{
+    "telemetry.enableTelemetry": false,
+    "vetur.validation.template": false,
+    "explorer.confirmDelete": false,
+    "editor.fontSize": 14,
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "html",
+        "vue",
+        {
+            "language": "vue",
+            "autoFix": true
+        }
+    ],
+    "eslint.options": {
+        "plugins": [
+            "html"
+        ]
+    },
+    "eslint.autoFixOnSave": true,
+    "python.linting.flake8Enabled": true,
+}

@@ -12,6 +12,7 @@
   </div>
 </template>
 <script>
+import baseUrls from "../api/baseUrl";
 export default {
   data() {
     return {
@@ -29,17 +30,13 @@ export default {
   methods: {
     joinTank() {
       if (!this.ws || this.ws.readyState === 3) {
-        this.ws = new WebSocket("ws://192.168.1.70:8124/tank");
+        this.ws = new WebSocket(baseUrls.tank);
         this.ws.onopen = () => {
           console.log("send");
         };
         this.ws.onmessage = evt => {
           let data = JSON.parse(evt.data);
-          console.log(data.type);
           switch (data.type) {
-            case 0:
-              this.clearPlayer(data.mes);
-              break;
             case 2:
               this.initPosition(data.mes);
               break;
@@ -60,19 +57,18 @@ export default {
       }
     },
     initPosition(mes) {
+      this.ctx.clearRect(0, 0, 800, 800);
       console.log(mes);
       mes.numbers.forEach(element => {
-        if (!this.player.find(e => e.id === element.id)) {
-          this.player.push(element);
-          this.ctx.fillStyle = this.initColor[element.id];
-          this.ctx.fillRect(
-            element.pos.x,
-            element.pos.y,
-            element.pos.size,
-            element.pos.size
-          );
-          this.ctx.strokeText(element.name, element.pos.x, element.pos.y);
-        }
+        this.ctx.fillStyle = this.initColor[element.id];
+        this.ctx.fillRect(
+          element.pos.x,
+          element.pos.y,
+          element.pos.size,
+          element.pos.size
+        );
+        this.ctx.font = "16px serif";
+        this.ctx.strokeText(element.name, element.pos.x, element.pos.y+22);
       });
     },
     changePosition(mes) {
@@ -80,10 +76,11 @@ export default {
     },
     infoGame(mes) {
       alert(mes.info);
-    },
-    clearPlayer(res) {
-      console.log(res);
     }
+    // clearPlayer(res) {
+    //   let outPlayer = this.player.find(r => r.id === res.id);
+    //   this.player.splice(this.player.indexOf(outPlayer), 1);
+    // }
   },
   mounted() {
     this.canvas = document.getElementById("tutor");
