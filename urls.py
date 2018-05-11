@@ -1,4 +1,4 @@
-from games import ChatHandler, tankHandler
+from games import ChatHandler, TankHandler
 urls = [
     (r"/ws", ChatHandler),
-    (r"/tank", tankHandler), ]
+    (r"/tank", TankHandler), ]

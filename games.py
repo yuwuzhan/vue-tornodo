@@ -35,9 +35,9 @@ class ChatHandler(WebSocketHandler):
         return True  # 允许WebSocket的跨域请求
 
 
-class tankHandler(WebSocketHandler):
-    users = []  # 用来存放在线用户的容器
-    players = []
+class TankHandler(WebSocketHandler):
+    users = []          # 用来存放在线用户的容器
+    players = []  # 存放用户信息的容器
     mes = BaseData()
     initPosition = {
         0: {'x': 380, 'y': 740, 'size': 40},
@@ -45,6 +45,19 @@ class tankHandler(WebSocketHandler):
         2: {'x': 740, 'y': 380, 'size': 40},
         3: {'x': 380, 'y': 20, 'size': 40},
     }
+
+    def getPlayerInfo(self):
+        players = []
+        for u in self.users:
+            players.append({
+                'name': u.name,
+                'pos': u.pos,
+                'id': u.id,
+            })
+        return players
+
+    def changeSite(self):
+        # TODO:changeSite
 
     def open(self):
         nums = len(self.users)
@@ -55,17 +68,13 @@ class tankHandler(WebSocketHandler):
             self.users.append(self)
             self.id = self.users.index(self)
             self.mes.setType(2)
-            self.players.append({
-                'name': self.name,
-                'pos': self.pos,
-                'id': self.id,
-            })
+            player = self.getPlayerInfo()
             for u in self.users:
                 send_mes = {
                     'name': u.name,
                     'isRoomer': u.isRoomer,
                     'id': self.id,
-                    'numbers': self.players,
+                    'numbers': player,
                 }
                 self.mes.setMes(send_mes)
                 u.write_message(json.dumps(self.mes.getData()).encode())
@@ -80,12 +89,21 @@ class tankHandler(WebSocketHandler):
             u.write_message(u'123')
 
     def on_close(self):
+
         self.users.remove(self)  # 用户关闭连接后从容器中移除用户
-        if self.isRoomer:
+        players = self.getPlayerInfo()
+        self.mes.setType(2)
+        if self.isRoomer and len(self.users) > 0:
             self.users[0].isRoomer = 1
         for u in self.users:
-            self.mes.setType(0)
-            self.mes.setMes({'id': self.id, 'name': self.name})
+            u.id = self.users.index(u)
+            send_mes = {
+                'name': u.name,
+                'isRoomer': u.isRoomer,
+                'id': self.id,
+                'numbers': players,
+            }
+            self.mes.setMes(send_mes)
             u.write_message(json.dumps(self.mes.getData()).encode())
 
     def check_origin(self, origin):
