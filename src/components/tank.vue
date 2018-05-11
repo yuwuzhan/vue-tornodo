@@ -37,6 +37,9 @@ export default {
           let data = JSON.parse(evt.data);
           console.log(data.type);
           switch (data.type) {
+            case 0:
+              this.clearPlayer(data.mes);
+              break;
             case 2:
               this.initPosition(data.mes);
               break;
@@ -68,7 +71,7 @@ export default {
             element.pos.size,
             element.pos.size
           );
-          this.ctx.fillText(element.name, element.pos.x, element.pos.y);
+          this.ctx.strokeText(element.name, element.pos.x, element.pos.y);
         }
       });
     },
@@ -77,6 +80,9 @@ export default {
     },
     infoGame(mes) {
       alert(mes.info);
+    },
+    clearPlayer(res) {
+      console.log(res);
     }
   },
   mounted() {
