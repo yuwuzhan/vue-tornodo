@@ -2,6 +2,15 @@ from tornado.websocket import WebSocketHandler
 import json
 from getname import get_name
 from message import BaseData
+operation_handel = {
+    'direction': {
+        'w': [0, -10],
+        's': [0, 10],
+        'a': [-10, 0],
+        'd': [10, 0],
+
+    }
+}
 
 
 class ChatHandler(WebSocketHandler):
@@ -56,8 +65,10 @@ class TankHandler(WebSocketHandler):
             })
         return players
 
-    def changeSite(self):
-        # TODO:changeSite
+    def changePosition(self):
+        # TODO:changePosition
+
+        return 0
 
     def open(self):
         nums = len(self.users)
@@ -85,8 +96,17 @@ class TankHandler(WebSocketHandler):
             self.close()
 
     def on_message(self, message):
+        msg = json.loads(message)
+        self.pos['x'] += operation_handel['direction'][msg['direction']][0]
+        self.pos['y'] += operation_handel['direction'][msg['direction']][1]
+        self.mes.setType(2)
+        players = self.getPlayerInfo()
+        send_mes = {
+            'numbers': players
+        }
+        self.mes.setMes(send_mes)
         for u in self.users:  # 向在线用户广播消息
-            u.write_message(u'123')
+            u.write_message(json.dumps(self.mes.getData()).encode())
 
     def on_close(self):
 
@@ -98,7 +118,7 @@ class TankHandler(WebSocketHandler):
         for u in self.users:
             u.id = self.users.index(u)
             send_mes = {
-                'name': u.name,
+                'name': u.name, 
                 'isRoomer': u.isRoomer,
                 'id': self.id,
                 'numbers': players,
