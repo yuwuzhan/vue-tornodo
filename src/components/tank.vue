@@ -33,6 +33,7 @@ export default {
         this.ws = new WebSocket(baseUrls.tank);
         this.ws.onopen = () => {
           console.log("send");
+          window.addEventListener("keypress",this.keypressEvt);
         };
         this.ws.onmessage = evt => {
           let data = JSON.parse(evt.data);
@@ -68,8 +69,11 @@ export default {
           element.pos.size
         );
         this.ctx.font = "16px serif";
-        this.ctx.strokeText(element.name, element.pos.x, element.pos.y+22);
+        this.ctx.strokeText(element.name, element.pos.x, element.pos.y + 22);
       });
+    },
+    keypressEvt(e){
+        this.ws.send(JSON.stringify({direction:e.key}))
     },
     changePosition(mes) {
       console.log(mes);
