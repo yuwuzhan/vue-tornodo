@@ -11,7 +11,7 @@ class BaseData:
          """
         self.data = {
             'type': 0,
-            'mes': {},
+            'mes': {'test':'aha'},
         }
 
     def getData(self):
@@ -21,4 +21,8 @@ class BaseData:
         self.data['type'] = mestype
 
     def setMes(self, mes):
+        self.data['mes'] = mes
+
+    def setMesAndType(self, mestype, mes):
+        self.data['type'] = mestype
         self.data['mes'] = mes
