@@ -33,7 +33,7 @@ export default {
         this.ws = new WebSocket(baseUrls.tank);
         this.ws.onopen = () => {
           console.log("send");
-          window.addEventListener("keypress",this.keypressEvt);
+          window.addEventListener("keypress", this.keypressEvt);
         };
         this.ws.onmessage = evt => {
           let data = JSON.parse(evt.data);
@@ -47,6 +47,8 @@ export default {
             case 4:
               this.infoGame(data.mes);
               break;
+            default:
+              console.log(data.mes);
           }
         };
         this.ws.onclose = evt => {
@@ -72,8 +74,14 @@ export default {
         this.ctx.strokeText(element.name, element.pos.x, element.pos.y + 22);
       });
     },
-    keypressEvt(e){
-        this.ws.send(JSON.stringify({direction:e.key}))
+    keypressEvt(e) {
+      console.log(e.keyCode);
+      if (e.key.length !== 32) {
+        this.ws.send(JSON.stringify({ key: e.keyCode }));
+      } else {
+        this.ws.send(JSON.stringify({ fire: 1 }));
+      }
+      e.preventDefault();
     },
     changePosition(mes) {
       console.log(mes);
