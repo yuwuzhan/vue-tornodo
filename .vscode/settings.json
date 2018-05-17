@@ -20,4 +20,10 @@
     },
     "eslint.autoFixOnSave": true,
     "python.linting.flake8Enabled": true,
+    "editor.parameterHints": true,
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true,
+        "strings": true
+    },
 }
