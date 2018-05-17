@@ -1,5 +1,4 @@
 from tornado.websocket import WebSocketHandler
-import json
 from tools.tools import get_name
 from message import BaseData
 

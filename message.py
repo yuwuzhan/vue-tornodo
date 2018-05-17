@@ -11,7 +11,7 @@ class BaseData:
          """
         self.data = {
             'type': 0,
-            'mes': {'test':'aha'},
+            'mes': {},
         }
 
     def getData(self):
