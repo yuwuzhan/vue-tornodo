@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div>
-    <router-view></router-view>
-    </div>
+    <router-view class="app-items"></router-view>
   </div>
 </template>
 
@@ -24,15 +22,27 @@ export default {
 </script>
 
 <style>
+@import url('./static/css/main.css');
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  height:100%;
+  /* margin-top: 60px; */
 }
 
+html,
+body {
+  height: 100%;
+}
+.app-items{
+  height: 100%;
+}
+body {
+  margin: 0;
+}
 h1,
 h2 {
   font-weight: normal;
